@@ -64,13 +64,13 @@ use Cwd;
 
 # so this is obviously dumb, to hardcode it here. sorry. need a config system
 my %source = (
-	'mammals'    => 'http://phylotastic-wg.nescent.org/examples/rawdata/Bininda-emonds_2007_mammals.nex',
-	'fishes'     => 'http://phylotastic-wg.nescent.org/examples/rawdata/Westneat_Lundberg_BigFishTree.nex',
-	'tolweb'        => 'http://phylotastic-wg.nescent.org/examples/rawdata/TOL.xml',
-	'angio'      => 'http://phylotastic-wg.nescent.org/examples/rawdata/Smith_2011_angiosperms.txt',
-	'phylomatic' => 'http://phylotastic-wg.nescent.org/examples/rawdata/Phylomatictree.nex',
-	'goloboff' => 'http://phylotastic-wg.nescent.org/examples/rawdata/Goloboff_molecules_only_shortest.nwk.txt',
-	'greengenes' => 'http://phylotastic-wg.nescent.org/examples/rawdata/Greengenes2011.txt'
+	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
+	'fishes'     => 'http://localhost/examples/rawdata/Westneat_Lundberg_BigFishTree.nex',
+	'tolweb'     => 'http://localhost/examples/rawdata/TOL.xml',
+	'angio'      => 'http://localhost/examples/rawdata/Smith_2011_angiosperms.txt',
+	'phylomatic' => 'http://localhost/examples/rawdata/Phylomatictree.nex',
+	'goloboff'   => 'http://localhost/examples/rawdata/Goloboff_molecules_only_shortest.nwk.txt',
+	'greengenes' => 'http://localhost/examples/rawdata/Greengenes2011.txt'
 );
 
 
