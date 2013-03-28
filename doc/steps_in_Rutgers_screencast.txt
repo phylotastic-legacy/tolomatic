@@ -1,0 +1,18 @@
+1. (Get Data/ Upload file) upload tree with nexus file to galaxy (bininda-emonds)
+2. Phylotastic tools / babelphysh convert to adjacency table 
+3. Phylotastic tools / TaxTractor (extracts labels from various types of files)
+* input ==> adjacency table 
+* 
+4. Text manipulation/ select random lines from file 
+5. Phylotastic tools / Prune-o-matic to get subtree with the randomly selected names 
+
+name reconciliation 
+6. Phylotastic tools / TaxTractor translate names from list of 40 by s/_/ /g 
+7. Phylotastic tools / TNRS to get name mappings 
+
+divergence dates 
+8. Phylotastic tools / Tree Node Dater run on output of pruner 
+
+merge 
+9.  Phylotastic tools / PhyleMerge - this is merging adjacency table from tree node dater with the taxon table from TNRS
+ output as web page
