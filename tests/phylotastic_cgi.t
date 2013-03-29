@@ -15,8 +15,9 @@ phylotastic_cgi.t - Tests for the phylotastic.cgi script
 use strict;
 use warnings;
 
-use Test::More tests => 2;
+use Test::More tests => 3;
 use Test::WWW::Mechanize;
+use HTTP::Async;
 
 my $SCRIPT_URL = $ENV{'SCRIPT_URL'};
 $SCRIPT_URL = "http://phylotastic-wg.nescent.org/script/phylotastic.cgi"
@@ -65,4 +66,28 @@ subtest 'Try every example listed on the website' => sub {
         "Correct tree returned for pets/mammals/newick");
 
     # TODO: finish this.
+};
+
+# TODO: Add a test for when the tree is blank (e.g. searching for mammals on a plant tree).
+
+subtest 'See if I can reproduce the twice-at-once error' => sub {
+    plan tests => 2;
+
+    my $uri = URI->new($SCRIPT_URL);
+    $uri->query_form(
+        species => 'Felis silvestris, Canis lupus, Cavia porcellus, Mustela nigripes',
+        tree => 'mammals',
+        format => 'newick'
+    );
+
+    my $async = HTTP::Async->new;
+    $async->add(HTTP::Request->new(GET => $uri));
+    $async->add(HTTP::Request->new(GET => $uri));
+
+    while ( my $response = $async->wait_for_next_response ) {
+        is($response->decoded_content, 
+            "((Felis_silvestris,(Mustela_nigripes,Canis_lupus)),Cavia_porcellus);\x{0a}\x{0a}", 
+            "Output as expected"
+        );
+    }
 };
