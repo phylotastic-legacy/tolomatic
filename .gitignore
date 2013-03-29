@@ -16,3 +16,7 @@ tmp/
 tolomatic\.komodoproject
 script\/temp_web_form_html.html
 .DS_Store
+*~
+
+# Gaurav uses phylotastic_local.cgi to run this script locally.
+script/phylotastic_local.cgi
