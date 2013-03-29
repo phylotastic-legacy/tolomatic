@@ -133,7 +133,8 @@ my $TEMPDIR = $CWD . '/tmp/';
 my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
 
 # invoke hadoop
-system(
+my $error;
+my $returned = system(
 	"$ENV{HADOOP_HOME}/bin/hadoop",
 	'jar'       => "$ENV{HADOOP_HOME}/hadoop-$ENV{HADOOP_VERSION}-streaming.jar",
 	'-cmdenv'   => 'DATADIR=' . $DATADIR,
@@ -143,7 +144,33 @@ system(
 	'-mapper'   => $CWD . '/pruner/mapper.pl',
 	'-combiner' => $CWD . '/pruner/combiner.pl',
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
-) == 0 or die $?;
+);
+unless($returned == 0) {
+    $error = "An unknown error occured in executing the Hadoop job.";
+    
+    if ( exists $ENV{'QUERY_STRING'} ) {
+    	print $cgi->header(-status => '500 Server error');
+        print <<ERROR_PAGE;
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+    <html lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Phylotastic topology server prototype using MapReduce</title>
+    <link rel="stylesheet" type="text/css" href="http://phylotastic.org/css/phylotastic.css">
+    </head>
+    <body>
+    <div class="pruner"><h1>An error has occured</h1><div class="error">$error</div>
+    </body>
+    </html>
+
+ERROR_PAGE
+        exit(1);
+    } else {
+        die $error;
+    }
+}
 
 # create provenance info
 my %provenance = (
