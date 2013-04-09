@@ -166,7 +166,7 @@ unless($returned == 0) {
     </html>
 
 ERROR_PAGE
-        exit(1);
+        exit(0);
     } else {
         die $error;
     }
