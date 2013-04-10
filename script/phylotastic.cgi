@@ -176,7 +176,8 @@ my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
 
 # invoke hadoop
 my $error;
-my $returned = system(
+my $returned = -2;
+my @cmdline = (
 	"$ENV{HADOOP_HOME}/bin/hadoop",
 	'jar'       => "$ENV{HADOOP_HOME}/hadoop-$ENV{HADOOP_VERSION}-streaming.jar",
 	'-cmdenv'   => 'DATADIR=' . $DATADIR,
@@ -187,10 +188,13 @@ my $returned = system(
 	'-combiner' => $CWD . '/pruner/combiner.pl',
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
 );
+my $cmdline = join(' ', @cmdline);
+my $output = `$cmdline`;
+
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job: $returned";
 
-    die($error . "Files in '$TEMPDIR': " . `ls "$TEMPDIR"`);
+    die($error . "\nExecuted <<$cmdline>>\nOutput: <<$output>>");
     
     exit 0;
 }
