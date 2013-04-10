@@ -148,7 +148,7 @@ my $returned = system(
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job.";
     
-    print $cgi->header(-status => '500 Server error');
+    print $cgi->header();
     print <<ERROR_PAGE;
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
