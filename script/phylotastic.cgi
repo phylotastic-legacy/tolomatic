@@ -74,7 +74,7 @@ if($running_as_cgi) {
     $SIG{__DIE__} = sub {
         my $error = "A fatal error has occured.";
 
-        warn $_[0] . " trapped by the die() handler.";
+#        warn $_[0] . " trapped by the die() handler.";
 
         print <<ERROR_PAGE;
 Status: 500 Server Error
