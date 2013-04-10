@@ -93,7 +93,7 @@ Content-type: text/html; charset=UTF-8
     <body>
     <div class="pruner"><h1>Error</h1>
     <div class="error">$error</div>
-    <div class="error">(<span style="font-size: 70%"><a href="phylotastic.cgi">back to the form</a></span>)</div>
+    <div class="error" style="font-size:80%">(<a href="phylotastic.cgi">back to the form</a>)</div>
     </body>
     </html>
 
