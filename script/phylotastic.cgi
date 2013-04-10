@@ -73,6 +73,7 @@ $running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
 if($running_as_cgi) {
     $SIG{__DIE__} = sub {
         my $error = "A fatal error has occured.";
+        my $error_msg = $_[0];
 
 #        warn $_[0] . " trapped by the die() handler.";
 
@@ -93,6 +94,10 @@ Content-type: text/html; charset=UTF-8
     <div class="pruner"><h1>An error has occured</h1><div class="error">$error</div>
     </body>
     </html>
+
+<!--
+    $error_msg
+-->
 
 ERROR_PAGE
 
