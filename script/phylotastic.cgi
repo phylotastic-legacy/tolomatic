@@ -75,6 +75,9 @@ if($running_as_cgi) {
         my $error = "A fatal error has occured.";
         my $error_msg = $_[0];
 
+        # Since debugging is turned off ...
+        $error = $error_msg;
+
 #        warn $_[0] . " trapped by the die() handler.";
 
         print <<ERROR_PAGE;
