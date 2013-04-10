@@ -222,6 +222,8 @@ print $cgi->header( $mime_type ) if $ENV{'QUERY_STRING'};
 my $outfile = "$TEMPDIR/part-00000";
 print `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines`, "\n";
 
+print "\n\n=====\n$output\n=====\n";
+
 # Remove the TEMPDIR.
 remove_tree($TEMPDIR);
 
