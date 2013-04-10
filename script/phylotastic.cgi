@@ -91,7 +91,7 @@ Content-type: text/html; charset=UTF-8
     <link rel="stylesheet" type="text/css" href="http://phylotastic.org/css/phylotastic.css">
     </head>
     <body>
-    <div class="pruner"><h1>An error has occured</h1><div class="error">$error</div>
+    <div class="pruner"><h1>Error</h1><div class="error">$error</div>
     </body>
     </html>
 
@@ -169,7 +169,7 @@ close $fh;
 my $PERL5LIB = join ':', @INC;
 
 # create temp dir
-my $TEMPDIR = tempdir(CLEANUP => 1);
+my $TEMPDIR = tempdir(DIR => $CWD . '/tmp', CLEANUP => 1);
 
 # create path to DATADIR
 my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
@@ -188,9 +188,9 @@ my $returned = system(
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
 );
 unless($returned == 0) {
-    $error = "An unknown error occured in executing the Hadoop job.";
+    $error = "An unknown error occured in executing the Hadoop job: $returned";
 
-    die($error);
+    die($error . "Files in '$TEMPDIR': " . `ls "$TEMPDIR"`);
     
     exit 0;
 }
