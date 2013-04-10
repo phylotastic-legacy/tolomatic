@@ -80,7 +80,7 @@ subtest 'Do we get an error if we give an incorrect tree?' => sub {
             'format' => 'newick'
         }
     }, "Submitting form for great apes/fishes/newick");
-    $mech->text_contains("An error has occured");
+    $mech->text_contains("atal error");
 };
 
 subtest 'See if I can reproduce the twice-at-once error' => sub {

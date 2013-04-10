@@ -192,9 +192,9 @@ my @cmdline = (
 );
 my $cmdline = join(' ', @cmdline) . " 2>&1";
 my $output = `$cmdline`;
-my $returned = $?;
+my $returned = ($? >> 0);
 
-unless($returned == 0) {
+if($returned != 0) {
     $error = "An unknown error occured in executing the Hadoop job: $returned";
 
     $output =~ tr/[\r\n]/\n/;
