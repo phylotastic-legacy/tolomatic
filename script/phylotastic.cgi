@@ -170,6 +170,7 @@ my $PERL5LIB = join ':', @INC;
 
 # create temp dir
 my $TEMPDIR = tempdir(DIR => $CWD . '/tmp', CLEANUP => 1);
+$TEMPDIR .= "/hadoop"; # Hadoop needs an empty directory.
 
 # create path to DATADIR
 my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
@@ -189,7 +190,7 @@ my @cmdline = (
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
 );
 my $cmdline = join(' ', @cmdline) . " 2>&1";
-my $output = ""; #`$cmdline`;
+my $output = `$cmdline`;
 
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job: $returned";
