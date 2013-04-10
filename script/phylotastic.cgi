@@ -103,6 +103,8 @@ if ( $params{'help'} ) {
 	exit 0;
 }
 
+print ".DEBUG.";
+
 # print web form and quit
 if ( exists $ENV{'QUERY_STRING'} and not $ENV{'QUERY_STRING'} ) {
 	print $cgi->header;
