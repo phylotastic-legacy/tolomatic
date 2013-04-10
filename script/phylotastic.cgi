@@ -224,8 +224,8 @@ my $outfile = "$TEMPDIR/part-00000";
 my $final_tree = `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines 2>&1`;
 
 # If the final tree is blank, produce an error message.
-die("No tree resulted")
-    if((stat($outfile))[7] == 0);
+#die("No tree resulted")
+#    if((stat($outfile))[7] == 0);
 
 # Any other errors from newickify.pl.
 $DEBUG_DETAILS = $final_tree;
