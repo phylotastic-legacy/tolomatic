@@ -65,7 +65,7 @@ use Cwd;
 # Warning: turning the DEBUG flag on will leak LOTS
 # of information to users -- please don't leave this
 # on!
-my $DEBUG = 0;
+my $DEBUG = 1;
 
 # Set STDOUT to unbuffered.
 $| = 1;
