@@ -93,7 +93,7 @@ Content-type: text/html; charset=UTF-8
     <body>
     <div class="pruner"><h1>Error</h1>
     <div class="error">$error</div>
-    <div class="error" style="font-size:80%">(<a href="phylotastic.cgi">back to the form</a>)</div>
+    <div class="error" style="font-size:80%">(<a href="phylotastic.cgi">back to the form</a> or <a href="https://github.com/phylotastic/tolomatic/issues?state=open">report this error to us</a>)</div>
     </body>
     </html>
 
@@ -215,13 +215,20 @@ my %provenance = (
 );
 my $defines = join ' ', map { "--define $_='$provenance{$_}'" } keys %provenance;
 
+# determine final tree
+my $outfile = "$TEMPDIR/part-00000";
+my $final_tree = `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines 2>&1`;
+
+# If the final tree is blank, produce an error message.
+if($final_tree =~ /^\s*$/) {
+    die("No output produced.");
+}
+
 # print header
 my $mime_type = ( $params{format} =~ /xml$/i ) ? 'application/xml' : 'text/plain';
 print $cgi->header( $mime_type ) if $ENV{'QUERY_STRING'};
 
-# print content
-my $outfile = "$TEMPDIR/part-00000";
-print `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines`, "\n";
+print "$final_tree\n";
 
 # print "\n\n=====\n$output\n=====\n";
 
