@@ -69,10 +69,10 @@ subtest 'Try every example listed on the website' => sub {
 };
 
 subtest 'Do we get an error if we give an incorrect tree?' => sub {
-    plan tests => 1;
+    plan tests => 4;
 
     $mech->get_ok($SCRIPT_URL);
-    $mech->submit_form_ok({
+    $mech->submit_form({
         form_number => 1,
         fields => {
             'species' => 'Homo sapiens, Pan troglodytes, Gorilla gorilla, Pongo pygmaeus',
@@ -80,6 +80,7 @@ subtest 'Do we get an error if we give an incorrect tree?' => sub {
             'format' => 'newick'
         }
     }, "Submitting form for great apes/fishes/newick");
+    is($mech->status, 500, "Check that we get a 500 error");
     $mech->text_contains("rror");
 };
 
@@ -92,6 +93,8 @@ subtest 'See if I can reproduce the twice-at-once error' => sub {
         tree => 'mammals',
         format => 'newick'
     );
+
+    diag("Our URI: $uri.");
 
     my $async = HTTP::Async->new;
     $async->add(HTTP::Request->new(GET => $uri));

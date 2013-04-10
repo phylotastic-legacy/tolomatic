@@ -62,6 +62,11 @@ use File::Path qw(remove_tree);
 use CGI;
 use Cwd;
 
+# Warning: turning the DEBUG flag on will leak LOTS
+# of information to users -- please don't leave this
+# on!
+my $DEBUG = 1;
+
 # Set STDOUT to unbuffered.
 $| = 1;
 
@@ -70,15 +75,14 @@ my $running_as_cgi = 0;
 $running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
 
 # If we are running as CGI, trap die() so that we display a CGI-ish error message.
+my $DEBUG_DETAILS = "";
 if($running_as_cgi) {
     $SIG{__DIE__} = sub {
-        my $error = "A fatal error has occured.";
-        my $error_msg = $_[0];
+        my $error = $_[0];
 
-        # Since debugging is turned off ...
-        $error = $error_msg;
-
-#        warn $_[0] . " trapped by the die() handler.";
+        # If debugging is turned off, suppress the $DEBUG_DETAILS.
+        $DEBUG_DETAILS = ""
+            unless($DEBUG);
 
         print <<ERROR_PAGE;
 Status: 500 Server Error
@@ -101,7 +105,7 @@ Content-type: text/html; charset=UTF-8
     </html>
 
 <!--
-    $error_msg
+    $DEBUG_DETAILS
 -->
 
 ERROR_PAGE
@@ -196,25 +200,22 @@ my @cmdline = (
 my $cmdline = join(' ', @cmdline) . " 2>&1";
 my $output = `$cmdline`;
 
-if($? & 127) {
-    $error = "An unknown error occured in executing the Hadoop job: died from signal " . ($? & 127);
-
+if($? != 0) {
     $output =~ tr/[\r\n]/\n/;
 
-    die($error 
-# . "\nExecuted <<$cmdline>>\nOutput: <<$output>>"
-    );
+    $DEBUG_DETAILS = "Executed <<$cmdline>>\nOutput: <<$output>>.";
+    die("An unknown error occured in executing the Hadoop job, returned $?");
     
     exit 0;
 }
 
 # create provenance info
 my %provenance = (
-	'species' => $params{'species'},
-	'treeid'  => $params{'tree'},
-	'tnrs'    => 'exactMatch',
-	'pruner'  => 'MapReduce',
-	'source'  => $source{lc $params{'tree'}},
+    'species' => $params{'species'},
+    'treeid'  => $params{'tree'},
+    'tnrs'    => 'exactMatch',
+    'pruner'  => 'MapReduce',
+    'source'  => $source{lc $params{'tree'}},
 );
 my $defines = join ' ', map { "--define $_='$provenance{$_}'" } keys %provenance;
 
@@ -223,6 +224,7 @@ my $outfile = "$TEMPDIR/part-00000";
 my $final_tree = `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines 2>&1`;
 
 # If the final tree is blank, produce an error message.
+$DEBUG_DETAILS = $final_tree;
 die("newickify.pl failed with an error") 
     if($? & 127);
 
