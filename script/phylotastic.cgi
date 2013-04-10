@@ -164,8 +164,7 @@ close $fh;
 my $PERL5LIB = join ':', @INC;
 
 # create temp dir
-mkdir("$CWD/tmp");
-my $TEMPDIR = tempdir(DIR => $CWD . '/tmp/');
+my $TEMPDIR = tempdir(CLEANUP => 1);
 
 # create path to DATADIR
 my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
