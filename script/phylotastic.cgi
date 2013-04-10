@@ -192,14 +192,15 @@ my @cmdline = (
 );
 my $cmdline = join(' ', @cmdline) . " 2>&1";
 my $output = `$cmdline`;
-my $returned = ($? >> 0);
 
-if($returned != 0) {
-    $error = "An unknown error occured in executing the Hadoop job: $returned";
+if($? & 127) {
+    $error = "An unknown error occured in executing the Hadoop job: died from signal " . ($? & 127);
 
     $output =~ tr/[\r\n]/\n/;
 
-    die($error . "\nExecuted <<$cmdline>>\nOutput: <<$output>>");
+    die($error 
+# . "\nExecuted <<$cmdline>>\nOutput: <<$output>>"
+    );
     
     exit 0;
 }
@@ -222,7 +223,7 @@ print $cgi->header( $mime_type ) if $ENV{'QUERY_STRING'};
 my $outfile = "$TEMPDIR/part-00000";
 print `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines`, "\n";
 
-print "\n\n=====\n$output\n=====\n";
+# print "\n\n=====\n$output\n=====\n";
 
 # Remove the TEMPDIR.
 remove_tree($TEMPDIR);
