@@ -72,7 +72,9 @@ $running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
 # If we are running as CGI, trap die() so that we display a CGI-ish error message.
 if($running_as_cgi) {
     $SIG{__DIE__} = sub {
-        my $error = "A die() was called: <![CDATA[$_[0]]]>.";
+        my $error = "A fatal error has occured.";
+
+        warn $_[0] . " trapped by the die() handler.";
 
         print <<ERROR_PAGE;
 Status: 500 Server Error
@@ -162,8 +164,8 @@ close $fh;
 my $PERL5LIB = join ':', @INC;
 
 # create temp dir
-remove_tree( $CWD . '/tmp/' );
-my $TEMPDIR = $CWD . '/tmp/';
+mkdir("$CWD/tmp");
+my $TEMPDIR = tempdir(DIR => $CWD . '/tmp/');
 
 # create path to DATADIR
 my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
@@ -206,6 +208,9 @@ print $cgi->header( $mime_type ) if $ENV{'QUERY_STRING'};
 # print content
 my $outfile = "$TEMPDIR/part-00000";
 print `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines`, "\n";
+
+# Remove the TEMPDIR.
+remove_tree($TEMPDIR);
 
 exit 0;
 

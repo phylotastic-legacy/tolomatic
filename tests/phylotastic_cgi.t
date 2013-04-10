@@ -79,7 +79,7 @@ subtest 'Do we get an error if we give an incorrect tree?' => sub {
             'tree' => 'fishes',
             'format' => 'newick'
         }
-    }, "Submitting form for great apes/mammals/newick");
+    }, "Submitting form for great apes/fishes/newick");
     $mech->text_contains("An error has occured");
 };
 
