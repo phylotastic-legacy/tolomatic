@@ -69,6 +69,35 @@ $| = 1;
 my $running_as_cgi = 0;
 $running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
 
+# If we are running as CGI, trap die() so that we display a CGI-ish error message.
+if($running_as_cgi) {
+    $SIG{__DIE__} = sub {
+        my $error = "A die() was called.";
+
+        print <<ERROR_PAGE;
+Status: 500 Server Error
+Content-type: text/html; charset=UTF-8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+    <html lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Phylotastic topology server prototype using MapReduce</title>
+    <link rel="stylesheet" type="text/css" href="http://phylotastic.org/css/phylotastic.css">
+    </head>
+    <body>
+    <div class="pruner"><h1>An error has occured</h1><div class="error">$error</div>
+    </body>
+    </html>
+
+ERROR_PAGE
+
+        exit(0);
+    };
+}
+
 # so this is obviously dumb, to hardcode it here. sorry. need a config system
 my %source = (
 	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
@@ -155,26 +184,8 @@ my $returned = system(
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job.";
 
-    die($error) if($running_as_cgi);
+    die($error);
     
-    print $cgi->header();
-    print <<ERROR_PAGE;
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-
-    <html lang="en">
-    <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Phylotastic topology server prototype using MapReduce</title>
-    <link rel="stylesheet" type="text/css" href="http://phylotastic.org/css/phylotastic.css">
-    </head>
-    <body>
-    <div class="pruner"><h1>An error has occured</h1><div class="error">$error</div>
-    </body>
-    </html>
-
-ERROR_PAGE
-
     exit 0;
 }
 
