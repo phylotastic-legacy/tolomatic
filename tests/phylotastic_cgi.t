@@ -72,14 +72,14 @@ subtest 'Do we get an error if we give an incorrect tree?' => sub {
     plan tests => 4;
 
     $mech->get_ok($SCRIPT_URL);
-    $mech->submit_form({
+    $mech->submit_form(
         form_number => 1,
         fields => {
             'species' => 'Homo sapiens, Pan troglodytes, Gorilla gorilla, Pongo pygmaeus',
             'tree' => 'fishes',
             'format' => 'newick'
         }
-    }, "Submitting form for great apes/fishes/newick");
+    );
     is($mech->status, 500, "Check that we get a 500 error");
     $mech->text_contains("rror");
 };
