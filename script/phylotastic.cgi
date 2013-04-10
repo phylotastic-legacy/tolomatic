@@ -62,6 +62,9 @@ use File::Path qw(remove_tree);
 use CGI;
 use Cwd;
 
+# Set STDOUT to unbuffered.
+$| = 1;
+
 # so this is obviously dumb, to hardcode it here. sorry. need a config system
 my %source = (
 	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
