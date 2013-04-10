@@ -65,6 +65,10 @@ use Cwd;
 # Set STDOUT to unbuffered.
 $| = 1;
 
+# Figure out if we're running as a CGI script or not.
+my $running_as_cgi = 0;
+$running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
+
 # so this is obviously dumb, to hardcode it here. sorry. need a config system
 my %source = (
 	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
@@ -103,10 +107,8 @@ if ( $params{'help'} ) {
 	exit 0;
 }
 
-print ".DEBUG.";
-
 # print web form and quit
-if ( exists $ENV{'QUERY_STRING'} and not $ENV{'QUERY_STRING'} ) {
+if ( $running_as_cgi and not $ENV{'QUERY_STRING'} ) {
 	print $cgi->header;
 	print do { local $/; <DATA> };
 	exit 0;
@@ -127,7 +129,7 @@ my ( $fh, $filename ) = tempfile();
 print $fh join "\n", @species;
 close $fh;
 
-# extend PERL5LIB
+# extend PERL5LIB for child processes
 my $PERL5LIB = join ':', @INC;
 
 # create temp dir
@@ -139,7 +141,6 @@ my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
 
 # invoke hadoop
 my $error;
-print ".HERE.";
 my $returned = system(
 	"$ENV{HADOOP_HOME}/bin/hadoop",
 	'jar'       => "$ENV{HADOOP_HOME}/hadoop-$ENV{HADOOP_VERSION}-streaming.jar",
@@ -151,9 +152,10 @@ my $returned = system(
 	'-combiner' => $CWD . '/pruner/combiner.pl',
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
 );
-print ".THERE.";
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job.";
+
+    die($error) if($running_as_cgi);
     
     print $cgi->header();
     print <<ERROR_PAGE;
@@ -173,7 +175,7 @@ unless($returned == 0) {
 
 ERROR_PAGE
 
-    exit(0);
+    exit 0;
 }
 
 # create provenance info
@@ -194,6 +196,7 @@ print $cgi->header( $mime_type ) if $ENV{'QUERY_STRING'};
 my $outfile = "$TEMPDIR/part-00000";
 print `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines`, "\n";
 
+exit 0;
 
 __DATA__
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
