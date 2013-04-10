@@ -15,7 +15,7 @@ phylotastic_cgi.t - Tests for the phylotastic.cgi script
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Test::WWW::Mechanize;
 use HTTP::Async;
 
@@ -68,7 +68,20 @@ subtest 'Try every example listed on the website' => sub {
     # TODO: finish this.
 };
 
-# TODO: Add a test for when the tree is blank (e.g. searching for mammals on a plant tree).
+subtest 'Do we get an error if we give an incorrect tree?' => sub {
+    plan tests => 1;
+
+    $mech->get_ok($SCRIPT_URL);
+    $mech->submit_form_ok({
+        form_number => 1,
+        fields => {
+            'species' => 'Homo sapiens, Pan troglodytes, Gorilla gorilla, Pongo pygmaeus',
+            'tree' => 'fishes',
+            'format' => 'newick'
+        }
+    }, "Submitting form for great apes/mammals/newick");
+    $mech->text_contains("An error has occured");
+};
 
 subtest 'See if I can reproduce the twice-at-once error' => sub {
     plan tests => 2;
