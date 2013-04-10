@@ -188,11 +188,13 @@ my @cmdline = (
 	'-combiner' => $CWD . '/pruner/combiner.pl',
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
 );
-my $cmdline = join(' ', @cmdline);
-my $output = `$cmdline`;
+my $cmdline = join(' ', @cmdline) . " 2>&1";
+my $output = ""; #`$cmdline`;
 
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job: $returned";
+
+    $output =~ tr/[\r\n]/\n/;
 
     die($error . "\nExecuted <<$cmdline>>\nOutput: <<$output>>");
     
