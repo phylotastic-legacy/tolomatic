@@ -177,7 +177,6 @@ my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
 
 # invoke hadoop
 my $error;
-my $returned = -2;
 my @cmdline = (
 	"$ENV{HADOOP_HOME}/bin/hadoop",
 	'jar'       => "$ENV{HADOOP_HOME}/hadoop-$ENV{HADOOP_VERSION}-streaming.jar",
@@ -191,6 +190,7 @@ my @cmdline = (
 );
 my $cmdline = join(' ', @cmdline) . " 2>&1";
 my $output = `$cmdline`;
+my $returned = $?;
 
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job: $returned";
