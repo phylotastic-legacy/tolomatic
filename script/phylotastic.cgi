@@ -72,7 +72,7 @@ $running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
 # If we are running as CGI, trap die() so that we display a CGI-ish error message.
 if($running_as_cgi) {
     $SIG{__DIE__} = sub {
-        my $error = "A die() was called.";
+        my $error = "A die() was called: <![CDATA[$_[0]]]>.";
 
         print <<ERROR_PAGE;
 Status: 500 Server Error
