@@ -134,6 +134,7 @@ my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
 
 # invoke hadoop
 my $error;
+print ".HERE.";
 my $returned = system(
 	"$ENV{HADOOP_HOME}/bin/hadoop",
 	'jar'       => "$ENV{HADOOP_HOME}/hadoop-$ENV{HADOOP_VERSION}-streaming.jar",
@@ -145,6 +146,7 @@ my $returned = system(
 	'-combiner' => $CWD . '/pruner/combiner.pl',
 	'-reducer'  => $CWD . '/pruner/reducer.pl',
 );
+print ".THERE.";
 unless($returned == 0) {
     $error = "An unknown error occured in executing the Hadoop job.";
     
@@ -165,6 +167,8 @@ unless($returned == 0) {
     </html>
 
 ERROR_PAGE
+
+    exit(0);
 }
 
 # create provenance info
