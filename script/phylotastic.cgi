@@ -223,14 +223,14 @@ my $outfile = "$TEMPDIR/part-00000";
 my $final_tree = `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines 2>&1`;
 
 # If the final tree is blank, produce an error message.
-die("newickify.pl failed with an error.") 
-    unless($? & 127);
+die("newickify.pl failed with an error") 
+    if($? & 127);
 
 my $tree_name = $params{'tree'};
 # Get rid of all non-ASCII characters to avoid putting text into output HTML.
 $tree_name =~ tr/[^A-Za-z0-9]/_/;
 
-die("None of the nodes you searched for were found in tree $tree_name.")
+die("None of the nodes you searched for were found in tree $tree_name")
     if($final_tree =~ /^\s*$/);
 
 # print header
