@@ -182,7 +182,14 @@ my $TEMPDIR = tempdir(DIR => $CWD . '/tmp', CLEANUP => 1);
 $TEMPDIR .= "/hadoop"; # Hadoop needs an empty directory.
 
 # create path to DATADIR
-my $DATADIR = $CWD . '/../examples/' . lc($params{'tree'});
+my $tree_to_search = lc(params{'tree'});
+my $DATADIR = $CWD . "/../examples/$tree_to_search";
+
+# Sanitize tree_to_search.
+$tree_to_search =~ tr/[^A-Za-z0-9]/_/;
+
+die "No tree named '$tree_to_search' has been installed on this system"
+    unless(-d $DATADIR);
 
 # invoke hadoop
 my $error;
@@ -207,7 +214,7 @@ if($? != 0) {
 
     if($output =~ /Need DATADIR environment variable/) {
         # Detect cases where no pre-processed tree could be found.
-        die("No tree named '" . lc($params{'tree'}) . "' has been set up on this system.");
+        die("No tree named '$tree_to_search' has been set up on this system.");
     } else {
         die("An unknown error occured in executing the Hadoop job, returned $?");
     }
@@ -230,20 +237,14 @@ my $outfile = "$TEMPDIR/part-00000";
 my $final_tree = `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines 2>&1`;
 
 # If the final tree is blank, produce an error message.
-#die("No tree resulted")
-#    if((stat($outfile))[7] == 0);
+if($final_tree =~ /Can't call method "to_newick" on an undefined value/ or $final_tree =~ /^\s*$/) {
+    die("The taxa you searched for could not be found on '$tree_to_search'.");
+}
 
 # Any other errors from newickify.pl.
 $DEBUG_DETAILS = $final_tree;
-die("newickify.pl failed with an error") 
-    if($? & 127);
-
-my $tree_name = $params{'tree'};
-# Get rid of all non-ASCII characters to avoid putting text into output HTML.
-$tree_name =~ tr/[^A-Za-z0-9]/_/;
-
-die("None of the nodes you searched for were found in tree $tree_name")
-    if($final_tree =~ /^\s*$/);
+die("newickify.pl failed with an error, returned $?") 
+    if($? != 0);
 
 # print header
 my $mime_type = ( $params{format} =~ /xml$/i ) ? 'application/xml' : 'text/plain';
