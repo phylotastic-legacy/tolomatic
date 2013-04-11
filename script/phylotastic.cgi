@@ -204,7 +204,13 @@ if($? != 0) {
     $output =~ tr/[\r\n]/\n/;
 
     $DEBUG_DETAILS = "Executed <<$cmdline>>\nOutput: <<$output>>.";
-    die("An unknown error occured in executing the Hadoop job, returned $?");
+
+    if($output =~ /Need DATADIR environment variable/) {
+        # Detect cases where no pre-processed tree could be found.
+        die("No tree named '" . lc($params{'tree'}) . "' has been set up on this system.");
+    } else {
+        die("An unknown error occured in executing the Hadoop job, returned $?");
+    }
     
     exit 0;
 }
