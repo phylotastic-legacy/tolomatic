@@ -118,7 +118,7 @@ ERROR_PAGE
 my %source = (
 	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
 	'fishes'     => 'http://localhost/examples/rawdata/Westneat_Lundberg_BigFishTree.nex',
-	'tolweb'     => 'http://localhost/examples/rawdata/TOL.xml',
+	'tol'     => 'http://localhost/examples/rawdata/TOL.xml',
 	'angio'      => 'http://localhost/examples/rawdata/Smith_2011_angiosperms.txt',
 	'phylomatic' => 'http://localhost/examples/rawdata/Phylomatictree.nex',
 	'goloboff'   => 'http://localhost/examples/rawdata/Goloboff_molecules_only_shortest.nwk.txt',
@@ -291,7 +291,7 @@ __DATA__
 				<select name="tree" id="treeSelector">
 					<option value="mammals">mammals</option>				
 					<option value="fishes">fishes</option>
-					<option value="tolweb">tolweb</option>
+					<option value="tol">tolweb</option>
 					<option value="angiosperms">angiosperms</option>
 					<option value="phylomatic">phylomatic</option>
 					<option value="goloboff">goloboff</option>
