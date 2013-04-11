@@ -85,7 +85,6 @@ if($running_as_cgi) {
             unless($DEBUG);
 
         print <<ERROR_PAGE;
-Status: 500 Server Error
 Content-type: text/html; charset=UTF-8
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
