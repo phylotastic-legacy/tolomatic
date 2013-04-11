@@ -185,7 +185,7 @@ my $tree_to_search = lc($params{'tree'});
 my $DATADIR = $CWD . "/../examples/$tree_to_search";
 
 # Sanitize tree_to_search.
-$tree_to_search =~ tr/[^A-Za-z0-9]/_/;
+$tree_to_search =~ s/[^A-Za-z0-9]/_/g;
 
 die "No tree named '$tree_to_search' has been installed on this system"
     unless(-d $DATADIR);
