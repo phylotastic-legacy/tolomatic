@@ -181,7 +181,7 @@ my $TEMPDIR = tempdir(DIR => $CWD . '/tmp', CLEANUP => 1);
 $TEMPDIR .= "/hadoop"; # Hadoop needs an empty directory.
 
 # create path to DATADIR
-my $tree_to_search = lc(params{'tree'});
+my $tree_to_search = lc($params{'tree'});
 my $DATADIR = $CWD . "/../examples/$tree_to_search";
 
 # Sanitize tree_to_search.
