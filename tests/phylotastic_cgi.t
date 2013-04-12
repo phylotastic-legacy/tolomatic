@@ -65,22 +65,72 @@ subtest 'Try every example listed on the website' => sub {
     $mech->content_is("((Felis_silvestris,(Mustela_nigripes,Canis_lupus)),Cavia_porcellus);\x{0a}\x{0a}", 
         "Correct tree returned for pets/mammals/newick");
 
-    # TODO: finish this.
+    # musical fish families
+    $mech->get_ok($SCRIPT_URL);
+    $mech->submit_form_ok({
+        form_number => 1,
+        fields => {
+            'species' => 'Aulostomidae, Rhinobatidae, Syngnathidae, Sciaenidae',
+            'tree' => 'fishes',
+            'format' => 'newick'
+        }
+    }, "Submitting form for musical fish families/fishes/newick");
+    $mech->content_is("((((Aulostomidae,Syngnathidae)),Sciaenidae),Rhinobatidae);\x{0a}\x{0a}",
+        "Correct tree returned for musical fish families/mammals/newick");
+
+    # tree nuts
+    $mech->get_ok($SCRIPT_URL);
+    $mech->submit_form_ok({
+        form_number => 1,
+        fields => {
+            'species' => 'Macadamia integrifolia, Pinus edulis, Corylus heterophylla, Pistacia vera, Castanea dentata, Juglans nigra, Prunus dulcis, Bertholletia excelsa',
+            'tree' => 'angiosperms',
+            'format' => 'newick'
+        }
+    }, "Submitting form for tree nuts/angiosperms/newick");
+    $mech->content_is("((Bertholletia_excelsa,((Prunus_dulcis,((Corylus_heterophylla,Juglans_nigra),Castanea_dentata)),Pistacia_vera)),Macadamia_integrifolia);\x{0a}\x{0a}",
+        "Correct tree returned for tree nuts/angiosperms/newick");
+
+    # cool ants
+    $mech->get_ok($SCRIPT_URL);
+    $mech->submit_form_ok({
+        form_number => 1,
+        fields => {
+            'species' => 'Oecophylla smaragdina, Camponotus inflatus, Myrmecia pilosula',
+            'tree' => 'tol',
+            'format' => 'newick'
+        }
+    }, "Submitting form for cool ants/tol/newick");
+    $mech->content_is(";\x{0a}\x{0a}",
+        "Correct tree returned for cool ants/tol/newick");
+
+    # tree nuts (genera)
+    $mech->get_ok($SCRIPT_URL);
+    $mech->submit_form_ok({
+        form_number => 1,
+        fields => {
+            'species' => 'macadamia integrifolia, pinus, corylus heterophylla, pistacia, castanea, juglans, prunus, bertholletia',
+            'tree' => 'phylomatic',
+            'format' => 'newick'
+        }
+    }, "Submitting form for tree nuts (genera)/phylomatic/newick");
+    $mech->content_is(";\x{0a}\x{0a}",
+        "Correct tree returned for tree nuts (genera)/phylomatic/newick");
+
 };
 
 subtest 'Do we get an error if we give an incorrect tree?' => sub {
     plan tests => 4;
 
     $mech->get_ok($SCRIPT_URL);
-    $mech->submit_form(
+    $mech->submit_form_ok({
         form_number => 1,
         fields => {
             'species' => 'Homo sapiens, Pan troglodytes, Gorilla gorilla, Pongo pygmaeus',
             'tree' => 'fishes',
             'format' => 'newick'
         }
-    );
-    is($mech->status, 500, "Check that we get a 500 error");
+    }, "Submitting form for great apes/fishes/newick");
     $mech->text_contains("rror");
 };
 
