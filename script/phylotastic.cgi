@@ -247,7 +247,7 @@ my $final_tree = `$CWD/newickify.pl -i $outfile -f $params{'format'} $defines 2>
 
 # If the final tree is blank, produce an error message.
 if($final_tree =~ /Can't call method "to_newick" on an undefined value/ or $final_tree =~ /^\s*$/) {
-    $DEBUG_DETAILS = $output; # From the Hadoop run.
+    $DEBUG_DETAILS = "Hadoop output: <<$output>>\n\nnewickify.pl output: <<$final_tree>>"; 
     die("The taxa you searched for could not be found on tree '$tree_to_search'.");
 }
 
