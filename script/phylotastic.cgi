@@ -300,7 +300,9 @@ __DATA__
 					<option value="tol">tolweb</option>
 					<option value="angiosperms">angiosperms</option>
 					<option value="phylomatic">phylomatic</option>
+<!-- commented out Goloboff tree (not pre-processed, takes too long) 
 					<option value="goloboff">goloboff</option>
+-->
 					<option value="greengenes">greengenes</option>
 				</select>
 				<label for="formatSelector">Output format:</label>
