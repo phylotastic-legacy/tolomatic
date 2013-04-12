@@ -311,7 +311,7 @@ __DATA__
 				<select name="tree" id="treeSelector">
 					<option value="mammals">mammals</option>				
 					<option value="fishes">fishes</option>
-					<option value="tol">tolweb</option>
+					<option value="tolweb">tolweb</option>
 					<option value="angiosperms">angiosperms</option>
 					<option value="phylomatic">phylomatic</option>
 <!-- commented out greengenes & Goloboff trees (not pre-processed, takes too long) 
