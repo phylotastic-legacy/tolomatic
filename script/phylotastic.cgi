@@ -167,8 +167,15 @@ my @species = split /,/, $params{'species'};
 
 # sanitize list by fixing spaces, underscores, and capitalization
 s/^\s+|\s+$//g for @species; # remove leading and trailing spaces 
-s/ /_/g for @species;  # convert internal spaces to underscores
-#
+
+# This sanitization breaks tol! Temporary solution: if we're doing
+# tol, don't do this.
+my $tree_to_search = lc($params{'tree'});
+if($tree_to_search ne 'tol') {
+    s/ /_/g for @species;  # convert internal spaces to underscores
+}
+
+# 
 # had to cut this out to allow use of phylomatic tree which is all lowercase names
 # tr/A-Z/a-z/ for @species; # lower-case the whole thing
 # s/^(\w)/\u$1/ for @species; # capitalize first word
@@ -185,7 +192,6 @@ my $TEMPDIR = tempdir(DIR => $CWD . '/tmp', CLEANUP => 1);
 $TEMPDIR .= "/hadoop"; # Hadoop needs an empty directory.
 
 # create path to DATADIR
-my $tree_to_search = lc($params{'tree'});
 my $DATADIR = $CWD . "/../examples/$tree_to_search";
 
 # Sanitize tree_to_search.
