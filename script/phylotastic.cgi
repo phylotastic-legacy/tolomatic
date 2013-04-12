@@ -75,7 +75,10 @@ my $running_as_cgi = 0;
 $running_as_cgi = 1 if exists $ENV{'QUERY_STRING'};
 
 # If we are running as CGI, trap die() so that we display a CGI-ish error message.
-my $DEBUG_DETAILS = "";
+my $DEBUG_DETAILS = "No debugging messages emitted.";
+$DEBUG_DETAILS = "Debug flag turned off."
+    unless $DEBUG;
+
 if($running_as_cgi) {
     $SIG{__DIE__} = sub {
         my $error = $_[0];
