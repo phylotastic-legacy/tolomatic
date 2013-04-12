@@ -143,12 +143,18 @@ subtest 'See if I can reproduce the twice-at-once error' => sub {
         tree => 'mammals',
         format => 'newick'
     );
+    my $uri_2 = $uri->clone;
+    $uri_2->query_form({
+        species => 'Felis silvestris, Canis lupus, Cavia porcellus',
+        tree => 'mammals',
+        format => 'newick'
+    });
 
-    diag("Our URI: $uri.");
+    diag("Our URI: $uri and $uri_2");
 
     my $async = HTTP::Async->new;
     $async->add(HTTP::Request->new(GET => $uri));
-    $async->add(HTTP::Request->new(GET => $uri));
+    $async->add(HTTP::Request->new(GET => $uri_2));
 
     while ( my $response = $async->wait_for_next_response ) {
         is($response->decoded_content, 

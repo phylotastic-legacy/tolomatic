@@ -124,7 +124,7 @@ ERROR_PAGE
 my %source = (
 	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
 	'fishes'     => 'http://localhost/examples/rawdata/Westneat_Lundberg_BigFishTree.nex',
-	'tol'     => 'http://localhost/examples/rawdata/TOL.xml',
+	'tolweb'     => 'http://localhost/examples/rawdata/TOL.xml',
 	'angio'      => 'http://localhost/examples/rawdata/Smith_2011_angiosperms.txt',
 	'phylomatic' => 'http://localhost/examples/rawdata/Phylomatictree.nex',
 	'goloboff'   => 'http://localhost/examples/rawdata/Goloboff_molecules_only_shortest.nwk.txt',
@@ -170,13 +170,7 @@ my @species = split /,/, $params{'species'};
 
 # sanitize list by fixing spaces, underscores, and capitalization
 s/^\s+|\s+$//g for @species; # remove leading and trailing spaces 
-
-# This sanitization breaks tol! Temporary solution: if we're doing
-# tol, don't do this.
-my $tree_to_search = lc($params{'tree'});
-if($tree_to_search ne 'tol') {
-    s/ /_/g for @species;  # convert internal spaces to underscores
-}
+s/ /_/g for @species;  # convert internal spaces to underscores
 
 # 
 # had to cut this out to allow use of phylomatic tree which is all lowercase names
@@ -195,6 +189,7 @@ my $TEMPDIR = tempdir(DIR => $CWD . '/tmp', CLEANUP => 1);
 $TEMPDIR .= "/hadoop"; # Hadoop needs an empty directory.
 
 # create path to DATADIR
+my $tree_to_search = lc($params{'tree'});
 my $DATADIR = $CWD . "/../examples/$tree_to_search";
 
 # Sanitize tree_to_search.
