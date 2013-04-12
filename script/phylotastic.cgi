@@ -114,6 +114,7 @@ ERROR_PAGE
 }
 
 # so this is obviously dumb, to hardcode it here. sorry. need a config system
+# (note that, currently, this source hash is used only for provenance info, not data) 
 my %source = (
 	'mammals'    => 'http://localhost/examples/rawdata/Bininda-emonds_2007_mammals.nex',
 	'fishes'     => 'http://localhost/examples/rawdata/Westneat_Lundberg_BigFishTree.nex',
@@ -358,6 +359,9 @@ __DATA__
 		<li><b>fishes</b>: fish families from Westneat & Lundberg
 		<li><b>tolweb</b>: XML dump of entire phylogeny from tolweb.org
 		<li><b>angio</b>: Smith, et al., 2011 phylogeny of angiosperms
+<!--
+		<li><b>goloboff</b>: Goloboff, et al., tree of ~ all eukaryotes in GenBank
+-->
 		<li><b>phylomatic</b>: plant framework from Phylomatic (Webb & Donoghue, 2005)
 		</ul>
 The mammals tree includes the vast majority of known extant mammals, but the other trees are missing many known species.  Some of these trees do not include species, but only higher taxonomic units (genera, families, orders). 
