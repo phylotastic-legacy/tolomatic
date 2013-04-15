@@ -346,13 +346,13 @@ __DATA__
 				<td>musical fish families</td><td>fishes</td><td>Aulostomidae, Rhinobatidae, Syngnathidae, Sciaenidae</td>
 			</tr>
 			<tr>
-				<td>tree nuts</td><td>angio</td><td>Macadamia integrifolia, Pinus edulis, Corylus heterophylla, Pistacia vera, Castanea dentata, Juglans nigra, Prunus dulcis, Bertholletia excelsa</td>
+				<td>tree nuts</td><td>angio</td><td>Macadamia integrifolia, Pinus koraiensis, Corylus heterophylla, Pistacia vera, Castanea dentata, Juglans nigra, Gingko biloba, Celtis occidentalis, Prunus dulcis, Bertholletia excelsa</td>
 			</tr>
 			<tr>
-				<td>cool ants</td><td>tolweb</td><td>Oecophylla smaragdina,  Camponotus inflatus, Myrmecia pilosula</td>
+				<td>cool ants</td><td>tolweb</td><td>Oecophylla smaragdina,  Harpegnathos saltator, Atta columbica, Cheliomyrmex morosus</td>
 			</tr>
 			<tr>
-				<td>tree nuts (genera)</td><td>phylomatic</td><td>macadamia integrifolia, pinus, corylus heterophylla, pistacia, castanea, juglans, prunus, bertholletia</td>
+				<td>a few tree nuts</td><td>phylomatic</td><td>macadamia integrifolia, macadamia grandis, corylus heterophylla, corylus chinensis, prunus</td>
 			</tr>
 		</table>    
     </td>
