@@ -38,7 +38,7 @@ subtest 'Test user-facing content' => sub {
 };
 
 subtest 'Try every example listed on the website' => sub {
-    plan tests => 6;
+    plan tests => 18;
 
     # Great apes.
     $mech->get_ok($SCRIPT_URL);
@@ -83,12 +83,12 @@ subtest 'Try every example listed on the website' => sub {
     $mech->submit_form_ok({
         form_number => 1,
         fields => {
-            'species' => 'Macadamia integrifolia, Pinus edulis, Corylus heterophylla, Pistacia vera, Castanea dentata, Juglans nigra, Prunus dulcis, Bertholletia excelsa',
+            'species' => 'Macadamia integrifolia, Pinus koraiensis, Corylus heterophylla, Pistacia vera, Castanea dentata, Juglans nigra, Gingko biloba, Celtis occidentalis, Prunus dulcis, Bertholletia excelsa',
             'tree' => 'angiosperms',
             'format' => 'newick'
         }
     }, "Submitting form for tree nuts/angiosperms/newick");
-    $mech->content_is("((Bertholletia_excelsa,((Prunus_dulcis,((Corylus_heterophylla,Juglans_nigra),Castanea_dentata)),Pistacia_vera)),Macadamia_integrifolia);\x{0a}\x{0a}",
+    $mech->content_is("((((((Celtis_occidentalis,Prunus_dulcis),((Corylus_heterophylla,Juglans_nigra),Castanea_dentata)),Pistacia_vera),Bertholletia_excelsa),Macadamia_integrifolia),Pinus_koraiensis);\x{0a}\x{0a}",
         "Correct tree returned for tree nuts/angiosperms/newick");
 
     # cool ants
@@ -96,25 +96,25 @@ subtest 'Try every example listed on the website' => sub {
     $mech->submit_form_ok({
         form_number => 1,
         fields => {
-            'species' => 'Oecophylla smaragdina, Camponotus inflatus, Myrmecia pilosula',
+            'species' => 'Oecophylla smaragdina, Harpegnathos saltator, Atta columbica, Cheliomyrmex morosus',
             'tree' => 'tol',
             'format' => 'newick'
         }
     }, "Submitting form for cool ants/tol/newick");
-    $mech->content_is(";\x{0a}\x{0a}",
+    $mech->content_is("(Atta_columbica,Harpegnathos_saltator,Cheliomyrmex_morosus,Oecophylla_smaragdina);\x{0a}\x{0a}",
         "Correct tree returned for cool ants/tol/newick");
 
-    # tree nuts (genera)
+    # a few tree nuts
     $mech->get_ok($SCRIPT_URL);
     $mech->submit_form_ok({
         form_number => 1,
         fields => {
-            'species' => 'macadamia integrifolia, pinus, corylus heterophylla, pistacia, castanea, juglans, prunus, bertholletia',
+            'species' => 'macadamia integrifolia, macadamia grandis, corylus heterophylla, corylus chinensis, prunus',
             'tree' => 'phylomatic',
             'format' => 'newick'
         }
     }, "Submitting form for tree nuts (genera)/phylomatic/newick");
-    $mech->content_is(";\x{0a}\x{0a}",
+    $mech->content_is("(((macadamia_integrifolia,macadamia_grandis)),((((corylus_heterophylla,corylus_chinensis)),prunus)));\x{0a}\x{0a}",
         "Correct tree returned for tree nuts (genera)/phylomatic/newick");
 
 };
@@ -145,7 +145,7 @@ subtest 'See if I can reproduce the twice-at-once error' => sub {
     );
     my $uri_2 = $uri->clone;
     $uri_2->query_form({
-        species => 'Felis silvestris, Canis lupus, Cavia porcellus',
+        species => 'Felis silvestris, Canis lupus, Cavia porcellus, Mustela nigripes',
         tree => 'mammals',
         format => 'newick'
     });
