@@ -301,7 +301,8 @@ __DATA__
 		<td align="left">			
 				<br>
 				<label for="speciesList">Species list:</label>
-				<textarea cols="70" rows="3" id="speciesList" name="species" class="species">Homo sapiens, Pan troglodytes, Gorilla gorilla, Pongo pygmaeus</textarea>		
+				<textarea cols="70" rows="3" id="speciesList" name="species" class="species">Homo sapiens, Pan troglodytes, Gorilla gorilla, Pongo pygmaeus</textarea>
+				<br>		
 			   <label for="treeSelector">Source tree:</label>
 				<select name="tree" id="treeSelector">
 					<option value="mammals">mammals</option>				
