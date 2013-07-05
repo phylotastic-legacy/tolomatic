@@ -364,14 +364,14 @@ __DATA__
 		<li><b>How it works</b>.  Pruning can be done by recursive calls into a database (which probably would need to hit the database many times) or by loading the whole tree into memory (which might take a while to read in the file, and cost a bit of memory).  The way it is done here is much cooler, because it never requires the whole tree to be in memory or in a database: the pruning is done in parallel using <a href="http://en.wikipedia.org/wiki/MapReduce">MapReduce</a>.  Some tests on the entire dump of the <a href="http://tolweb.org">Tree of Life Web Project</a> showed that this returns a pruned subtree within a few seconds, fast enough for a web service.  To find out more, read the <a href="https://github.com/phylotastic/tolomatic/blob/master/README.pod">online docs at github</a>. 
 		<li><b>Source trees</b>.  Some information on the source trees used in this project is as follows: 
 		<ul class="littleul">
-		<li><b>mammals</b>: 4500 mammal species from Bininda-Emonds, et al. 2007. 
-		<li><b>fishes</b>: fish families from Westneat & Lundberg
-		<li><b>tolweb</b>: XML dump of entire phylogeny from tolweb.org
-		<li><b>angio</b>: Smith, et al., 2011 phylogeny of angiosperms
+		<li><b><a href="http://phylotastic.org/data/Bininda-emonds_2007_mammals.nex">mammals</a></b>: 4500 mammal species from <a href="http://www.ncbi.nlm.nih.gov/pubmed/17392779">Bininda-Emonds, et al. 2007</a>.
+		<li><b><a href="http://phylotastic.org/data/Westneat_Lundberg_BigFishTree.nex">fishes</a></b>: fish families from Westneat & Lundberg, unpublished.
+		<li><b><a href="http://www.evoio.org/wiki/File:TOL.xml.zip">tolweb</a></b>: XML dump of entire phylogeny from tolweb.org.
+		<li><b><a href="http://www.evoio.org/wiki/File:Smith_2011_angiosperms.txt">angio</a></b>: <a href="http://www.amjbot.org/content/98/3/404.full">Smith, et al., 2011</a> phylogeny of angiosperms.
 <!--
 		<li><b>goloboff</b>: Goloboff, et al., tree of ~ all eukaryotes in GenBank
 -->
-		<li><b>phylomatic</b>: plant framework from Phylomatic (Webb & Donoghue, 2005)
+		<li><b><a href="http://www.evoio.org/wiki/File:Phylomatictree.nex">phylomatic</a></b>: plant framework from Phylomatic (Webb & Donoghue, 2005).
 		</ul>
 The mammals tree includes the vast majority of known extant mammals, but the other trees are missing many known species.  Some of these trees do not include species, but only higher taxonomic units (genera, families, orders). 
 		<li><b>The web-services API</b>.  This web page is just a front end to a web service!  You can call the service directly (no web page) like this:
